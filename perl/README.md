@@ -4,8 +4,7 @@ for example: GRCh38 to GRCh37 or GRCh37 to GRCh38
 
 # Description of CLI
 
-usage: assembly_conversion.pl -c <CHROMOSOME> -st <START> -en <END> [-s <SPECIES>] [-fr <SOURCE_ASM>] [-to <DEST_ASM>]  [-f <FILE_NAME>] [-str <STRAND>] [-h]
-    help:
+- usage: assembly_conversion.pl -c CHROMOSOME -st START -en END [-s <SPECIES>] [-fr <SOURCE_ASM>] [-to <DEST_ASM>]  [-f <FILE_NAME>] [-str <STRAND>] [-h]\
     -h | --help                        Shows help message
 
     -c | --chromosome <CHROMOSOME>     Name of the chromosome [1-22] X Y.
