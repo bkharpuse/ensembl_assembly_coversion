@@ -4,44 +4,42 @@ use diagnostics;
 use Getopt::Long;
 use JSON::XS;
 use Bio::EnsEMBL::Registry;
-use feature 'say';
 
 sub get_help_message {
-  my $msg = <<"END";
-    usage: assembly_conversion.pl -c <CHROMOSOME> -st <START> -en <END> [-sp <SPECIES>] [-fr <SOURCE_ASM>] [-to <DEST_ASM>] [-f <FILE_NAME>] [-str <STRAND>] [-h]
-    help:
-    -h | --help                        Shows help message
+    print "usage: assembly_conversion.pl -c <CHROMOSOME> -st <START> -en <END> [-sp <SPECIES>] [-fr <SOURCE_ASM>] [-to <DEST_ASM>] [-f <FILE_NAME>] [-str <STRAND>] [-h]\n";
+    print "help:\n";
+    print "-h | --help                        Shows help message\n\n";
 
-    -c | --chromosome <CHROMOSOME>     Name of the chromosome [1-22] X Y.
-                                       Required
+    print "-c | --chromosome <CHROMOSOME>     Name of the chromosome [1-22] X Y\n";
+    print "                                   Required\n\n";
 
-    -st | --start <START>              Start point of chromosome.
-                                       Required
+    print "-st | --start <START>              Start point of chromosome\n";
+    print "                                   Required\n\n";
 
-    -en | --end <END>                  End point of chromosome.
-                                       Required
+    print "-en | --end <END>                  End point of chromosome\n";
+    print "                                   Required\n\n";
 
-    -sp | --species <SPECIES>          Species name/alias
-                                       Optional
-                                       Default value : human
+    print "-sp | --species <SPECIES>          Species name/alias\n";
+    print "                                   Optional\n";
+    print "                                   Default value : human\n\n";
 
-    -fr | --source_assembly <SRC_ASM>  Version of the source/input assembly
-                                       Optional
-                                       Default value : GRCh38
+    print "-fr | --source_assembly <SRC_ASM>  Version of the source/input assembly\n";
+    print "                                   Optional\n";
+    print "                                   Default value : GRCh38\n\n";
+    
 
-    -to | --dest_assembly <DEST_ASM>   Version of the destination/output assembly
-                                       Optional
-                                       Default value : GRCh37
+    print "-to | --dest_assembly <DEST_ASM>   Version of the destination/output assembly\n";
+    print "                                   Optional\n";
+    print "                                   Default value : GRCh37\n\n";
 
-    -f | --file <FILE_NAME>            Dumps Json output data in the given file
-                                       Optional
-                                       Default : output.json
+    print "-f | --file <FILE_NAME>            Dumps Json output data in the given file\n";
+    print "                                   Optional\n";
+    print "                                   Default : output.json\n\n";
 
-    -str | --strand <STRAND>           Value of strand
-                                       Optional
-                                       Default value : 1
-END
-    return $msg;
+    print "-str | --strand <STRAND>           Value of strand\n";
+    print "                                   Optional\n";
+    print "                                   Default value : 1\n";
+    die " ";
 }
 
 sub write_to_json_file {
@@ -52,13 +50,12 @@ sub write_to_json_file {
     open my $fh, ">", $file_name;
     print $fh $to_json;
     close $fh;
-    printf("Data is available in output json file as well..");
+    printf("Data is available in output json file..");
 }
 
 sub get_arguments {
     my ($chromosome, $start, $end);
     my ($species, $src_asm, $dest_asm, $file_name, $strand) = ('Human', 'GRCh38', 'GRCh37', 'output.json', '1');
-    my $help_message = get_help_message();
 
     GetOptions(
         'species|sp=s' => \$species,
@@ -70,11 +67,10 @@ sub get_arguments {
         'file|f=s' => \$file_name,
         'strand|str=s' => \$strand,
         'h|help!'
-        )
-    or die($help_message);
+    ) or get_help_message();
 
     if (!defined $chromosome || !defined $start || !defined $end) {
-        say $help_message
+        get_help_message();
     }
 
     printf("Data to be used for assembly conversion:
@@ -143,7 +139,7 @@ sub show_data_mappings {
     my $old_version    = $old_slice->coord_system()->version();
 
     my $projection = $old_slice->project('chromosome', $dest_asm);
-    printf("-------OLD SLICE INFO[$src_asm]------------------------------CONVERTED SLICE INFO[$dest_asm]\n");
+    printf("-------OLD SLICE INFO[$src_asm]---------------------CONVERTED SLICE INFO[$dest_asm]\n");
     my @data_array = ();
     foreach my $segment (@{$projection}) {
         printf( "%s:%s:%s:%d:%d:%d-----%s\n",
